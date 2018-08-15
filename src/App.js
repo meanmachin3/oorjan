@@ -11,7 +11,7 @@ class Post extends React.Component {
               <div className = "header">
               <a href={this.props.link} target="_blank">{this.props.title}</a>
               </div>
-              <div className='meta'>Published: {(new Date(this.props.published)).toDateString()}</div>
+              <div className='meta'>{this.props.published ? `Published: ${(new Date(this.props.published)).toDateString()}` : ''}</div>
               <div className='description'>{this.props.des}</div> 
               </div> 
             </div>           
@@ -23,18 +23,21 @@ class PostList extends React.Component {
   constructor(props) {
     super(props);
     this.handleSearch = this.handlePostSearch.bind(this);
-    this.state = {blogPosts: []}
+    this.state = {blogPosts: [], loading: false, query: ''}
 
   }
 
   getPosts = (search) => {
-    axios.get(`${API_URL}?per_page=5&search=${search}`)
+    this.setState({loading: true}, () => {
+      axios.get(`${API_URL}?per_page=5&search=${search}`)
       .then(({ data }) => {
-        console.log(data)
+        data = data.length ? data : [{title: {rendered :"No result found"}, excerpt: {rendered: ''}, published: ''}]
         this.setState({
-          blogPosts: data
+          blogPosts: data,
+          loading: false
         })
       })
+    })
   }
 
 
@@ -65,6 +68,7 @@ class PostList extends React.Component {
         <button className="ui button" onClick={this.handlePostSearch}>Search</button>
         </div>
         <div className='ui cards padded grid'>
+        <h5 className='ui header row'>{this.state.query ? `Showing search results for ${this.state.query}` : ''}</h5>
           {
             this.state.blogPosts.map(function(el) {
               return <Post 
