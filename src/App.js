@@ -45,7 +45,8 @@ class PostList extends React.Component {
   }
 
   handlePostSearch = (event) => {
-    if (event.key === "Enter"){
+    console.log(event.type)
+    if (event.key === "Enter" || event.type === "click"){
       this.setState({
         query: this.search.value
       }, () => {
@@ -58,8 +59,12 @@ class PostList extends React.Component {
     return (
       <div className='wrapCenter whiteBG'>
          <div className="todoWrap">
-        <input className='post_search ' type='text' placeholder="Search..." ref= {input => this.search = input} onKeyPress={this.handlePostSearch}/>
-        <div className='ui cards'>
+         <h1 className="ui center aligned header grey">Welcome to Oorjan</h1>
+        <div className = "ui action input">
+        <input className='post_search ' type='text' placeholder="Search for topics like 'panel cost'" ref= {input => this.search = input} onKeyPress={this.handlePostSearch}/>
+        <button className="ui button" onClick={this.handlePostSearch}>Search</button>
+        </div>
+        <div className='ui cards padded grid'>
           {
             this.state.blogPosts.map(function(el) {
               return <Post 
