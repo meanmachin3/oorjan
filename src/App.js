@@ -61,7 +61,7 @@ class PostList extends React.Component {
   render() {
     return (
       <div className='wrapCenter whiteBG'>
-         <div className="todoWrap">
+        <div className="todoWrap">
          <h1 className="ui center aligned header grey">Welcome to Oorjan</h1>
         <div className = "ui action input">
         <input className='post_search ' type='text' placeholder="Search for topics like 'panel cost'" ref= {input => this.search = input} onKeyPress={this.handlePostSearch}/>
@@ -70,6 +70,15 @@ class PostList extends React.Component {
         <div className='ui cards padded grid'>
         <h5 className='ui header row'>{this.state.query ? `Showing search results for ${this.state.query}` : ''}</h5>
           {
+            this.state.loading? <div class="ui icon message">
+            <i class="notched circle loading icon"></i>
+            <div class="content">
+              <div class="header">
+                Just one second
+              </div>
+              <p>We're fetching that content for you.</p>
+            </div>
+          </div>:
             this.state.blogPosts.map(function(el) {
               return <Post 
                        key={el.id} 
